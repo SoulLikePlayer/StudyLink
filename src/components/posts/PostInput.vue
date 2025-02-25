@@ -17,15 +17,19 @@
 
 <script>
 import moment from 'moment'
+import 'moment/dist/locale/fr'
+
+moment.locale('fr')
 
 class Post {
-  constructor({ text = '', image = null, biography = null, createdAt = new Date() }) {
+  constructor({ text = '', image = null, biography = null}) {
+    console.log(moment.locale())
     this.id = Math.random().toString(16).slice(2)
     this.text = text
     this.image = image
     this.biography = biography
-    this.createdAtDays = moment(String(createdAt)).format('MM/DD/YYYY')
-    this.createdAtHours = moment(String(createdAt)).format('hh:mm')
+    this.createdAtDays = moment(new Date()).format('dddd D MMMM')
+    this.createdAtHours = moment(new Date()).format('HH:mm')
   }
 }
 
@@ -55,7 +59,6 @@ export default {
     publishPost() {
       if (this.newPostText.trim() || this.newPostImage) {
         const newPost = new Post({
-          id: Date.now(),
           text: this.newPostText,
           image: this.newPostImage,
         })
@@ -78,6 +81,7 @@ export default {
   flex-direction: column;
   align-items: center;
   position: relative;
+  border: none;
 }
 .toggle-button {
   background-color: #1da1f2;

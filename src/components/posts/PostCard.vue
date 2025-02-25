@@ -24,14 +24,15 @@ export default {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .post-image {
-  width: 100%;
+  width: 50%;
+  height: 50%;
   max-height: 300px;
   object-fit: cover;
   border-radius: 10px;
   margin-bottom: 10px;
 }
 .post-text {
-  text-align: center;
+  text-align: left !important;
   font-size: 14px;
   color: #333;
 }
