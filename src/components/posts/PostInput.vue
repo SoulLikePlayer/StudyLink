@@ -22,12 +22,11 @@ import 'moment/dist/locale/fr'
 moment.locale('fr')
 
 class Post {
-  constructor({ text = '', image = null, biography = null}) {
+  constructor({ text = '', image = null}) {
     console.log(moment.locale())
     this.id = Math.random().toString(16).slice(2)
     this.text = text
     this.image = image
-    this.biography = biography
     this.createdAtDays = moment(new Date()).format('dddd D MMMM')
     this.createdAtHours = moment(new Date()).format('HH:mm')
   }
