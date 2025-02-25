@@ -3,6 +3,7 @@
     <img v-if="post.image" :src="post.image" alt="Post Image" class="post-image" />
     <p class="post-text">{{ post.text }}</p>
   </div>
+  <p class="post-created-at">Publier le {{ post.createdAtDays }} à {{ post.createdAtHours }}</p>
 </template>
 
 <script>
@@ -33,5 +34,10 @@ export default {
   text-align: center;
   font-size: 14px;
   color: #333;
+}
+
+.post-created-at {
+  text-align: left !important;
+  font-style: italic;
 }
 </style>

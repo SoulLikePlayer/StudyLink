@@ -1,56 +1,114 @@
 <template>
-  <div class="post-input">
-    <textarea v-model="newPost" placeholder="Quoi de neuf ?"></textarea>
-    <label for="imageUpload" class="icon-button">📷</label>
-    <input id="imageUpload" type="file" accept="image/*" @change="handleImageUpload" hidden />
-
-    <div v-if="newImage" class="preview-container">
-      <img :src="newImage" alt="Preview" class="preview-image" />
-    </div>
-
-    <button @click="publishPost">Publier</button>
+  <div class="post-input-container">
+    <button @click="toggleInput" class="toggle-button" :class="{ expanded: isExpanded }">+</button>
+    <transition name="fade-slide">
+      <div v-if="isExpanded" class="post-input">
+        <textarea v-model="newPostText" placeholder="Quoi de neuf ?"></textarea>
+        <label for="imageUpload" class="icon-button">📷</label>
+        <input id="imageUpload" type="file" accept="image/*" @change="handleImageUpload" hidden />
+        <div v-if="newPostImage" class="preview-container">
+          <img :src="newPostImage" alt="Preview" class="preview-image" />
+        </div>
+        <button @click="publishPost">Publier</button>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
+import moment from 'moment'
+
+class Post {
+  constructor({ text = '', image = null, biography = null, createdAt = new Date() }) {
+    this.id = Math.random().toString(16).slice(2)
+    this.text = text
+    this.image = image
+    this.biography = biography
+    this.createdAtDays = moment(String(createdAt)).format('MM/DD/YYYY')
+    this.createdAtHours = moment(String(createdAt)).format('hh:mm')
+  }
+}
+
 export default {
   name: 'PostInput',
   data() {
     return {
-      newPost: '',
-      newImage: null,
+      newPostText: '',
+      newPostImage: null,
+      isExpanded: false,
     }
   },
   methods: {
+    toggleInput() {
+      this.isExpanded = !this.isExpanded
+    },
     handleImageUpload(event) {
       const file = event.target.files[0]
       if (file) {
         const reader = new FileReader()
         reader.onload = () => {
-          this.newImage = reader.result
+          this.newPostImage = reader.result
         }
         reader.readAsDataURL(file)
       }
     },
     publishPost() {
-      if (this.newPost.trim() || this.newImage) {
-        this.$emit('post-created', { text: this.newPost, image: this.newImage })
-        this.newPost = ''
-        this.newImage = null
+      if (this.newPostText.trim() || this.newPostImage) {
+        const newPost = new Post({
+          id: Date.now(),
+          text: this.newPostText,
+          image: this.newPostImage,
+        })
+        this.$emit('post-created', newPost)
+        this.resetForm()
       }
+    },
+    resetForm() {
+      this.newPostText = ''
+      this.newPostImage = null
+      this.isExpanded = false
     },
   },
 }
 </script>
 
 <style scoped>
+.post-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.toggle-button {
+  background-color: #1da1f2;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
+}
+.toggle-button.expanded {
+  transform: rotate(45deg);
+  background-color: #0d8bec;
+}
 .post-input {
   background: white;
   padding: 15px;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  margin-top: 15px;
 }
 textarea {
   width: 100%;
@@ -60,6 +118,7 @@ textarea {
   padding: 10px;
   border-radius: 5px;
   background: #f0f2f5;
+  min-height: 80px;
 }
 .icon-button {
   font-size: 24px;
@@ -77,15 +136,27 @@ textarea {
 }
 button {
   margin-top: 10px;
-  padding: 8px;
+  padding: 10px;
   background-color: #1da1f2;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 button:hover {
   background-color: #0d8bec;
+}
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+.fade-slide-enter,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 </style>
