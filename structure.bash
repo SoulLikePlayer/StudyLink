@@ -1,4 +1,8 @@
 studylink/
+├── backend/
+│   ├──config/
+│   ├──controller/
+│   ├──core
 ├── public/
 │   └── index.html
 ├── src/

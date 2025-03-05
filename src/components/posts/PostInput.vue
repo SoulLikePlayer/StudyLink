@@ -4,9 +4,8 @@
     <transition name="fade-slide">
       <div v-if="isExpanded" class="post-input">
         <textarea v-model="newPostText" placeholder="Quoi de neuf ?"></textarea>
-        <button>
-          <label for="imageUpload" class="icon-button">Photo</label>
-        </button>
+
+        <label for="imageUpload" class="icon-button">Posté une Photo</label>
         <input id="imageUpload" type="file" accept="image/*" @change="handleImageUpload" hidden />
         <div v-if="newPostImage" class="preview-container">
           <img :src="newPostImage" alt="Preview" class="preview-image" />
@@ -24,8 +23,15 @@ import 'moment/dist/locale/fr';
 
 moment.locale('fr');
 
+class Author {
+  constructor({ username, profilePicture = null }) {
+    this.username = username;
+    this.profilePicture = profilePicture;
+  }
+}
+
 class Post {
-  constructor({ text = '', image = null, biography = null }) {
+  constructor({ text = '', image = null, biography = null, author = null }) {
     this.id = Math.random().toString(16).slice(2);
     this.text = text;
     this.image = image;
@@ -33,6 +39,7 @@ class Post {
     this.createdAtDays = moment(new Date()).format('dddd D MMMM');
     this.createdAtHours = moment(new Date()).format('HH:mm');
     this.timestamp = moment(new Date()).valueOf();
+    this.author = author;
   }
 }
 
@@ -59,9 +66,15 @@ const handleImageUpload = (event) => {
 
 const publishPost = () => {
   if (newPostText.value.trim() || newPostImage.value) {
+    const author = new Author({
+      username: "Louis LAZARE",
+      profilePicture: "https://e7.pngegg.com/pngimages/96/344/png-clipart-user-profile-instagram-computer-icons-insta-head-silhouette.png"
+    });
+
     const newPost = new Post({
       text: newPostText.value,
       image: newPostImage.value,
+      author: author,
     });
     emit('post-created', newPost);
     resetForm();
@@ -74,6 +87,7 @@ const resetForm = () => {
   isExpanded.value = false;
 };
 </script>
+
 
 <style scoped>
 .post-input-container {
