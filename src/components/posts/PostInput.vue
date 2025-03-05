@@ -20,6 +20,7 @@
 import { ref } from 'vue';
 import Author from '../data/Author';
 import Post from '../data/Post';
+import "../../assets/PostInput.css";
 
 const newPostText = ref('');
 const newPostImage = ref(null);
@@ -66,94 +67,4 @@ const resetForm = () => {
 };
 </script>
 
-
-<style scoped>
-.post-input-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  border: none;
-}
-.toggle-button {
-  background-color: #1da1f2;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 24px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    transform 0.3s ease,
-    background-color 0.3s ease;
-}
-.toggle-button.expanded {
-  transform: rotate(45deg);
-  background-color: #0d8bec;
-}
-.post-input {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 400px;
-  margin-top: 15px;
-}
-textarea {
-  width: 100%;
-  border: none;
-  outline: none;
-  resize: none;
-  padding: 10px;
-  border-radius: 5px;
-  background: #f0f2f5;
-  min-height: 80px;
-}
-.icon-button {
-  font-size: 24px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-.preview-container {
-  margin-top: 10px;
-}
-.preview-image {
-  width: 100%;
-  max-height: 200px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-button {
-  margin-top: 10px;
-  padding: 10px;
-  background-color: #1da1f2;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-button:hover {
-  background-color: #0d8bec;
-}
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
-}
-.fade-slide-enter,
-.fade-slide-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-</style>
 
