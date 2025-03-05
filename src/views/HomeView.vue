@@ -2,34 +2,26 @@
   <div class="home-container">
     <h1>Bienvenue chez StudyLink</h1>
     <div class="posts-wrapper">
-      <PostCard v-for="(post, index) in posts" :key="index" :post="post" />
+      <PostCard v-for="(post, index) in sortedPosts" :key="index" :post="post" />
     </div>
     <PostInput @post-created="addPost" class="post-input-fixed" />
   </div>
 </template>
 
-<script>
-import PostCard from '@/components/posts/PostCard.vue'
-import PostInput from '@/components/posts/PostInput.vue'
+<script setup>
+import { ref, computed } from 'vue';
+import PostCard from '@/components/posts/PostCard.vue';
+import PostInput from '@/components/posts/PostInput.vue';
 
-export default {
-  name: 'HomeView',
-  components: {
-    PostCard,
-    PostInput,
-  },
+const posts = ref([]);
 
-  data() {
-    return {
-      posts: [],
-    }
-  },
-  methods: {
-    addPost(post) {
-      this.posts.unshift(post)
-    },
-  },
-}
+const sortedPosts = computed(() => {
+  return [...posts.value].sort((a, b) => b.timestamp - a.timestamp);
+});
+
+const addPost = (post) => {
+  posts.value.push(post);
+};
 </script>
 
 <style scoped>
@@ -39,7 +31,7 @@ export default {
   text-align: center;
   font-family: Arial, sans-serif;
   position: relative;
-  padding-bottom: 80px; /* Pour éviter que les posts soient cachés sous l'input */
+  padding-bottom: 80px;
 }
 
 h1 {
@@ -48,7 +40,7 @@ h1 {
 }
 
 .posts-wrapper {
-  padding-bottom: 100px; /* Espace pour le PostInput */
+  padding-bottom: 100px;
 }
 
 .post-input-fixed {
@@ -63,3 +55,4 @@ h1 {
   border-top: 1px solid #ddd;
 }
 </style>
+

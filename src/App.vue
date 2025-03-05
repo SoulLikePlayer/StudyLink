@@ -4,10 +4,7 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'App',
-}
+<script setup>
 </script>
 
 <style>
@@ -17,3 +14,4 @@ export default {
   margin-top: 20px;
 }
 </style>
+

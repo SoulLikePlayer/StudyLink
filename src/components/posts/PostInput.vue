@@ -4,7 +4,9 @@
     <transition name="fade-slide">
       <div v-if="isExpanded" class="post-input">
         <textarea v-model="newPostText" placeholder="Quoi de neuf ?"></textarea>
-        <label for="imageUpload" class="icon-button">📷</label>
+        <button>
+          <label for="imageUpload" class="icon-button">Photo</label>
+        </button>
         <input id="imageUpload" type="file" accept="image/*" @change="handleImageUpload" hidden />
         <div v-if="newPostImage" class="preview-container">
           <img :src="newPostImage" alt="Preview" class="preview-image" />
@@ -15,64 +17,62 @@
   </div>
 </template>
 
-<script>
-import moment from 'moment'
-import 'moment/dist/locale/fr'
+<script setup>
+import { ref } from 'vue';
+import moment from 'moment';
+import 'moment/dist/locale/fr';
 
-moment.locale('fr')
+moment.locale('fr');
 
 class Post {
-  constructor({ text = '', image = null, biography = null}) {
-    console.log(moment.locale())
-    this.id = Math.random().toString(16).slice(2)
-    this.text = text
-    this.image = image
-    this.biography = biography
-    this.createdAtDays = moment(new Date()).format('dddd D MMMM')
-    this.createdAtHours = moment(new Date()).format('HH:mm')
+  constructor({ text = '', image = null, biography = null }) {
+    this.id = Math.random().toString(16).slice(2);
+    this.text = text;
+    this.image = image;
+    this.biography = biography;
+    this.createdAtDays = moment(new Date()).format('dddd D MMMM');
+    this.createdAtHours = moment(new Date()).format('HH:mm');
+    this.timestamp = moment(new Date()).valueOf();
   }
 }
 
-export default {
-  name: 'PostInput',
-  data() {
-    return {
-      newPostText: '',
-      newPostImage: null,
-      isExpanded: false,
-    }
-  },
-  methods: {
-    toggleInput() {
-      this.isExpanded = !this.isExpanded
-    },
-    handleImageUpload(event) {
-      const file = event.target.files[0]
-      if (file) {
-        const reader = new FileReader()
-        reader.onload = () => {
-          this.newPostImage = reader.result
-        }
-        reader.readAsDataURL(file)
-      }
-    },
-    publishPost() {
-      if (this.newPostText.trim() || this.newPostImage) {
-        const newPost = new Post({
-          text: this.newPostText,
-          image: this.newPostImage,
-        })
-        this.$emit('post-created', newPost)
-        this.resetForm()
-      }
-    },
-    resetForm() {
-      this.newPostText = ''
-      this.newPostImage = null
-      this.isExpanded = false
-    },
-  },
-}
+const newPostText = ref('');
+const newPostImage = ref(null);
+const isExpanded = ref(false);
+
+const emit = defineEmits(['post-created']);
+
+const toggleInput = () => {
+  isExpanded.value = !isExpanded.value;
+};
+
+const handleImageUpload = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      newPostImage.value = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+const publishPost = () => {
+  if (newPostText.value.trim() || newPostImage.value) {
+    const newPost = new Post({
+      text: newPostText.value,
+      image: newPostImage.value,
+    });
+    emit('post-created', newPost);
+    resetForm();
+  }
+};
+
+const resetForm = () => {
+  newPostText.value = '';
+  newPostImage.value = null;
+  isExpanded.value = false;
+};
 </script>
 
 <style scoped>
@@ -164,3 +164,4 @@ button:hover {
   transform: translateY(-10px);
 }
 </style>
+

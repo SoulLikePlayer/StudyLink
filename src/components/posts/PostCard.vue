@@ -6,13 +6,10 @@
   <p class="post-created-at">Publier le {{ post.createdAtDays }} à {{ post.createdAtHours }}</p>
 </template>
 
-<script>
-export default {
-  name: 'PostCard',
-  props: {
-    post: Object,
-  },
-}
+<script setup>
+defineProps({
+  post: Object,
+});
 </script>
 
 <style scoped>
@@ -42,3 +39,4 @@ export default {
   font-style: italic;
 }
 </style>
+
