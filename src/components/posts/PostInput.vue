@@ -7,17 +7,19 @@
 
         <label for="imageUpload" class="icon-button">Posté une Photo</label>
         <input id="imageUpload" type="file" accept="image/*" @change="handleImageUpload" hidden />
+
         <div v-if="newPostImage" class="preview-container">
           <img :src="newPostImage" alt="Preview" class="preview-image" />
         </div>
-        <button @click="publishPost">Publier</button>
+
+        <button @click="publishPost" :disabled="isDisabled" :class="{ disabled: isDisabled }">Publier</button>
       </div>
     </transition>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import Author from '../data/Author';
 import Post from '../data/Post';
 import "../../assets/PostInput.css";
@@ -43,8 +45,12 @@ const handleImageUpload = (event) => {
   }
 };
 
+const isDisabled = computed(() => {
+  return !(newPostText.value.trim() || newPostImage.value);
+});
+
 const publishPost = () => {
-  if (newPostText.value.trim() || newPostImage.value) {
+  if (!isDisabled.value) {
     const author = new Author({
       username: "Louis LAZARE",
       profilePicture: "https://e7.pngegg.com/pngimages/96/344/png-clipart-user-profile-instagram-computer-icons-insta-head-silhouette.png"
@@ -66,5 +72,3 @@ const resetForm = () => {
   isExpanded.value = false;
 };
 </script>
-
-

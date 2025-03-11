@@ -13,5 +13,6 @@ export default class Post {
     this.createdAtHours = moment(new Date()).format('HH:mm');
     this.timestamp = moment(new Date()).valueOf();
     this.author = author;
+    this.isLiked = false;
   }
 }

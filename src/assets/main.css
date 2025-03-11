@@ -86,7 +86,7 @@ video {
   font: inherit;
   vertical-align: baseline;
 }
-/* HTML5 display-role reset for older browsers */
+
 article,
 aside,
 details,
@@ -122,3 +122,11 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  text-align: center;
+  margin-top: 20px;
+}
+

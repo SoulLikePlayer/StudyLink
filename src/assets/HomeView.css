@@ -16,6 +16,19 @@ h1 {
   padding-bottom: 100px;
 }
 
+.no-post {
+  font-size: 1.2rem;
+  text-align: center;
+  color:#999;
+  font-style: italic;
+  padding: 20px;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  max-width: 600px;
+  margin : 0 auto;
+}
+
 .post-input-fixed {
   position: fixed;
   bottom: 0;
